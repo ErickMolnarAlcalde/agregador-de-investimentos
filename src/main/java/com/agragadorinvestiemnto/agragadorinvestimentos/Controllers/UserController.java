@@ -1,49 +1,51 @@
 package com.agragadorinvestiemnto.agragadorinvestimentos.Controllers;
 
 import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.UserRequestDTO;
+import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.UserResponseDTO;
 import com.agragadorinvestiemnto.agragadorinvestimentos.Models.User;
+import com.agragadorinvestiemnto.agragadorinvestimentos.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/users")
 public class UserController {
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestDTO requestDTO){
+    private final UserService userService;
 
-        //
-        return null;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody UserRequestDTO requestDTO){
+        return ResponseEntity.ok().body(userService.createUser(requestDTO));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getUserById(@PathVariable String id){
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id){
+        return ResponseEntity.ok().body(userService.findById(id));
 
-        //
-        return null;
     }
 
     @GetMapping
-    public List<ResponseEntity<User>> getAllUsers(){
-
-        //
-        return null;
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers(){
+        return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable String id,@Valid @RequestBody UserRequestDTO requestDTO){
-
-        //
-        return null;
+    @PutMapping("/update/{email}")
+    public ResponseEntity<UserResponseDTO> updateUserById(@PathVariable String email,@Valid @RequestBody UserRequestDTO requestDTO){
+        return ResponseEntity.ok().body(userService.alterByEmail(email, requestDTO));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable String id){
-
-        return null;
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email){
+        userService.delete(email);
+        return ResponseEntity.noContent().build();
     }
 
 }
