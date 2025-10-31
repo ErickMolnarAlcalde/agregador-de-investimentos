@@ -22,7 +22,7 @@ public class AccountStock {
 
     @ManyToOne
     @MapsId("stockId")
-    @JoinColumn(name = "sotck_id")
+    @JoinColumn(name = "stock_id")
     private Stock stock;
 
     private Integer quantity;
