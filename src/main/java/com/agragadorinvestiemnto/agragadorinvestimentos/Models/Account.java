@@ -21,6 +21,7 @@ public class Account {
 
     private String description;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
