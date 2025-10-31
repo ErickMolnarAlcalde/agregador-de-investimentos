@@ -1,5 +1,7 @@
 package com.agragadorinvestiemnto.agragadorinvestimentos.Controllers;
 
+import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.AccountResponseDto;
+import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.CreateAccountDTO;
 import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.UserRequestDTO;
 import com.agragadorinvestiemnto.agragadorinvestimentos.DTOS.UserResponseDTO;
 import com.agragadorinvestiemnto.agragadorinvestimentos.Models.User;
@@ -26,7 +28,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.createUser(requestDTO));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable UUID id){
         return ResponseEntity.ok().body(userService.findById(id));
 
@@ -46,6 +48,17 @@ public class UserController {
     public ResponseEntity<Void> deleteUserByEmail(@PathVariable String email){
         userService.delete(email);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{email}/accounts")
+    public ResponseEntity<UserResponseDTO> createAccount(@Valid @RequestBody CreateAccountDTO accountDTO,
+                                                      @PathVariable String email){
+        return ResponseEntity.ok().body(userService.createAccount(email,accountDTO));
+    }
+
+    @GetMapping("/findall/accounts")
+    public ResponseEntity<List<AccountResponseDto>> getAccount(){
+        return ResponseEntity.ok().body(userService.findAllAccounts());
     }
 
 }
