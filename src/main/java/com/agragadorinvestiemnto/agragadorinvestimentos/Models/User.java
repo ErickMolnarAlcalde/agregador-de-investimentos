@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +35,13 @@ public class User {
     @CreationTimestamp
     private Instant updateTimeStamp;
 
+    @OneToMany(mappedBy = "user")
+    private List<Account> accounts;
 
+    @ManyToMany
+    @JoinTable(name = "tb_account_stock",
+            joinColumns = @JoinColumn(name = "account_id"),
+            inverseJoinColumns = @JoinColumn(name ="stock_id"))
+    private List<Stock> stocks;
 
 }
