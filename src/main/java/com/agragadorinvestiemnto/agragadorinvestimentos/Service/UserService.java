@@ -51,6 +51,9 @@ public class UserService {
     public UserResponseDTO alterByEmail(String email, UserRequestDTO requestDTO){
         User user = userMapper.toAlter(email,requestDTO);
         userRepository.save(user);
+        if (user == null) {
+            return null; // ou lançar exceção
+        }
         UserResponseDTO userResponseDTO = userMapper.toTResponse(user);
         return  userResponseDTO;
     }
